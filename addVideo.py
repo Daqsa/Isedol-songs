@@ -125,4 +125,4 @@ def create_playlist():
 if __name__ == '__main__':
     youtube = get_authenticated_service()
     create_playlist()
-    add_video_to_playlist(youtube,"yszl2oxi8IY","PL2JW1S4IMwYubm06iDKfDsmWVB-J8funQ")
+    add_video_to_playlist(youtube,"MY_VIDEO_ID","MY_PLAYLIST_ID")
