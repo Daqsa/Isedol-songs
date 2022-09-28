@@ -1,112 +1,77 @@
-import httplib2
+# -*- coding: utf-8 -*-
+
+# Sample Python code for youtube.playlists.insert
+# See instructions for running these code samples locally:
+# https://developers.google.com/explorer-help/code-samples#python
+
 import os
-import sys
+
+import google_auth_oauthlib.flow
 import googleapiclient.discovery
+import googleapiclient.errors
 
-from apiclient.discovery import build
-from apiclient.errors import HttpError
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.file import Storage
-from oauth2client.tools import argparser, run
+scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
+def main():
+    # Disable OAuthlib's HTTPS verification when running locally.
+    # *DO NOT* leave this option enabled in production.
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-# The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
-# the OAuth 2.0 information for this application, including its client_id and
-# client_secret. You can acquire an OAuth 2.0 client ID and client secret from
-# the Google Cloud Console at
-# https://cloud.google.com/console.
-# Please ensure that you have enabled the YouTube Data API for your project.
-# For more information about using OAuth2 to access the YouTube Data API, see:
-#   https://developers.google.com/youtube/v3/guides/authentication
-# For more information about the client_secrets.json file format, see:
-#   https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
+    api_service_name = "youtube"
+    api_version = "v3"
+    client_secrets_file = "client_secrets.json"
 
-CLIENT_SECRETS_FILE = "client_secrets.json"
+    # Get credentials and create an API client
+    flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
+        client_secrets_file, scopes)
+    credentials = flow.run_console()
 
-# This variable defines a message to display if the CLIENT_SECRETS_FILE is
-# missing.
-MISSING_CLIENT_SECRETS_MESSAGE = """
-WARNING: Please configure OAuth 2.0
+    # build service object
+    youtube = googleapiclient.discovery.build(
+        api_service_name, api_version, credentials=credentials)
 
-To make this sample run you will need to populate the client_secrets.json file
-found at:
+    # create_playlist(youtube)
 
-%s
+    # this is a test playlist
+    my_playlist_id = "PLVf5a_cao2rT7KYBQcp8WjozjbK2suE1e"
+    ine_channel_id = "UCroM00J2ahCN6k-0-oAiDxg"
+    lilpa_channel_id = "UC-oCJP9t47v7-DmsnmXV38Q"
+    viichan_channel_id = "UCs6EwgxKLY9GG4QNUrP5hoQ"
+    gosegu_channel_id = "UCV9WL7sW6_KjanYkUUaIDfQ"
+    jingburger_channel_id = "UCHE7GBQVtdh-c1m3tjFdevQ"
+    jururu_channel_id = "UCTifMx1ONpElK5x6B4ng8eg"
 
-with information from the Cloud Console
-https://cloud.google.com/console
-
-For more information about the client_secrets.json file format, please visit:
-https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
-""" % os.path.abspath(os.path.join(os.path.dirname(__file__),
-                            CLIENT_SECRETS_FILE))
-
-
-# Disable OAuthlib's HTTPS verification when running locally.
-# *DO NOT* leave this option enabled in production.
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-
-# This OAuth 2.0 access scope allows for full read/write access to the
-# authenticated user's account.
-YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
-YOUTUBE_API_SERVICE_NAME = "youtube"
-YOUTUBE_API_VERSION = "v3"
-
-api_file_name = 'api_key'
-
-def get_file_contents(filename):
-    try:
-        with open(filename, 'r') as f:
-            #assume file contains a single line
-            return f.read().strip()
-    except FileNotFoundError:
-        print("'%s' file not found" % filename)
-
-DEVELOPER_KEY = get_file_contents(api_file_name)
+    ine_playlist_id = "" #아이네 노래🎶
+    lilpa_playlist_id = "PLLPGQs-RNQXnFl55WissjQylZbInOK81P"
+    viichan_playlist_id = "" #비챤 ✦노래
+    gosegu_playlist_id = "" #🐬 고 세 구 노 래
+    jingburger_playlist_id = "" #징버거 🎵ㅣ노래
+    jururu_playlist_id = ""#주르르 노래🎧
 
 
-def get_authenticated_service():
-    flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE, scope=YOUTUBE_SCOPE,
-    message=MISSING_CLIENT_SECRETS_MESSAGE)
 
-    storage = Storage("%s-oauth2.json" % sys.argv[0])
-    credentials = storage.get()
+    search_query(youtube, "노래", "playlist", "UCroM00J2ahCN6k-0-oAiDxg")
+    search_query(youtube, "노래", "playlist", "UCs6EwgxKLY9GG4QNUrP5hoQ")
+    search_query(youtube, "노래", "playlist", "UCV9WL7sW6_KjanYkUUaIDfQ")
+    search_query(youtube, "노래", "playlist", "UCHE7GBQVtdh-c1m3tjFdevQ")
+    search_query(youtube, "노래", "playlist", "UCTifMx1ONpElK5x6B4ng8eg")
 
-    if credentials is None or credentials.invalid:
-        credentials = run(flow, storage)
-
-    return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-        http=credentials.authorize(httplib2.Http()))
-
-
-def add_video_to_playlist(youtube,videoID,playlistID):
-    add_video_request=youtube.playlistItem().insert(
-    part="snippet",
-    body={
-        'snippet': {
-            'playlistId': playlistID, 
-            'resourceId': {
-                    'kind': 'youtube#video',
-                'videoId': videoID
-            }
-        #'position': 0
-        }
-}
-    ).execute()
-
-
-def create_playlist():
     
 
-    youtube = googleapiclient.discovery.build(
-        YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey = DEVELOPER_KEY)
 
-    request = youtube.playlists().insert(
+    # add_video_to_playlist(youtube, "oRiQHxft2mY", my_playlist_id)
+    # print(get_num_videos_in_playlist(youtube, lilpa_song_playlist_id))
+
+    youtube.close()
+    
+
+def create_playlist(service):
+    request = service.playlists().insert(
         part="snippet,status",
         body={
           "snippet": {
-            "title": "Sample playlist created via API",
-            "description": "This is a sample playlist description.",
+            "title": "이세돌 자동업뎃 플리",
+            "description": "지수 헌정",
             "tags": [
               "sample playlist",
               "API call"
@@ -119,10 +84,48 @@ def create_playlist():
         }
     )
     response = request.execute()
+    print("create_playlist", response)
 
+
+def search_query(service, query, result_type, channel_id):
+    request = service.search().list(
+        part="snippet",
+        maxResults=10,
+        q=query,
+        type=result_type,
+        channelId=channel_id
+    )
+    response = request.execute()
     print(response)
+    print("________________________________")
 
-if __name__ == '__main__':
-    youtube = get_authenticated_service()
-    create_playlist()
-    add_video_to_playlist(youtube,"MY_VIDEO_ID","MY_PLAYLIST_ID")
+def add_video_to_playlist(service, videoID, playlistID):
+      add_video_request=service.playlistItems().insert(
+      part="snippet",
+      body={
+            'snippet': {
+              'playlistId': playlistID, 
+              'resourceId': {
+                      'kind': 'youtube#video',
+                  'videoId': videoID
+                }
+            #'position': 0
+            }
+    }
+     ).execute()
+
+# returns number of videos in playlist
+def get_num_videos_in_playlist(service, playlistID):
+      request = service.playlists().list(
+        part="contentDetails",
+        id=playlistID
+      )
+      response = request.execute()
+      return response["items"][0]["contentDetails"]["itemCount"]
+
+
+
+
+
+if __name__ == "__main__":
+    main()
