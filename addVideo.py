@@ -41,22 +41,22 @@ def main():
     jingburger_channel_id = "UCHE7GBQVtdh-c1m3tjFdevQ"
     jururu_channel_id = "UCTifMx1ONpElK5x6B4ng8eg"
 
-    ine_playlist_id = "" #아이네 노래🎶
+    ine_playlist_id = "PLJWTWXJ7iqXctxVu1Fd3ZkF-WWD8kOzMb" #아이네 노래🎶
     lilpa_playlist_id = "PLLPGQs-RNQXnFl55WissjQylZbInOK81P"
-    viichan_playlist_id = "" #비챤 ✦노래
+    viichan_playlist_id = "UCs6EwgxKLY9GG4QNUrP5hoQ" #비챤 ✦노래
     gosegu_playlist_id = "" #🐬 고 세 구 노 래
-    jingburger_playlist_id = "" #징버거 🎵ㅣ노래
+    jingburger_playlist_id = "PLio0a5EPF6j099Af5uBaK6V25RtTvK4kq" #징버거 🎵ㅣ노래
     jururu_playlist_id = ""#주르르 노래🎧
 
 
 
-    search_query(youtube, "노래", "playlist", "UCroM00J2ahCN6k-0-oAiDxg")
-    search_query(youtube, "노래", "playlist", "UCs6EwgxKLY9GG4QNUrP5hoQ")
-    search_query(youtube, "노래", "playlist", "UCV9WL7sW6_KjanYkUUaIDfQ")
-    search_query(youtube, "노래", "playlist", "UCHE7GBQVtdh-c1m3tjFdevQ")
-    search_query(youtube, "노래", "playlist", "UCTifMx1ONpElK5x6B4ng8eg")
+    #search_query(youtube, "노래", "playlist", "UCroM00J2ahCN6k-0-oAiDxg")
+    #search_query(youtube, "노래", "playlist", "UCs6EwgxKLY9GG4QNUrP5hoQ")
+    #search_query(youtube, "노래", "playlist", "UCV9WL7sW6_KjanYkUUaIDfQ")
+    #search_query(youtube, "노래", "playlist", "UCHE7GBQVtdh-c1m3tjFdevQ")
+    #search_query(youtube, "노래", "playlist", "UCTifMx1ONpElK5x6B4ng8eg")
 
-    
+    initialize_playlist_file()
 
 
     # add_video_to_playlist(youtube, "oRiQHxft2mY", my_playlist_id)
@@ -122,6 +122,17 @@ def get_num_videos_in_playlist(service, playlistID):
       )
       response = request.execute()
       return response["items"][0]["contentDetails"]["itemCount"]
+
+# initializes a file containing the videoID and #videos in the playlist
+def initialize_playlist_file():
+      with open("playlist-data.txt", "a+") as file:
+        file.seek(0, os.SEEK_END) # go to end of file
+        if file.tell(): # if current position is truish 
+          file.seek(0) # rewind the file for later use
+        else: # file is empty
+          default_text = "ine,PLJWTWXJ7iqXctxVu1Fd3ZkF-WWD8kOzMb,0\nlilpa,PLLPGQs-RNQXnFl55WissjQylZbInOK81P,0\nviichan,UCs6EwgxKLY9GG4QNUrP5hoQ,0\njingburger,PLio0a5EPF6j099Af5uBaK6V25RtTvK4kq,0"
+          file.write(default_text)
+
 
 
 
